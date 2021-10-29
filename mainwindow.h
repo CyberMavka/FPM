@@ -15,7 +15,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    int getPenalty();
+    int getPenaltyTimeForMiss(int countPenalty);
+    QString convertSecondsToMinute(int seconds);
+    void setDifferenceCheese();
+    void setDifferenceMushroom();
+    void setDifferencePapperoni();
+private slots:
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
+
 #endif // MAINWINDOW_H
