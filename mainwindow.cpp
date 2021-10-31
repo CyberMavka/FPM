@@ -102,12 +102,12 @@ void MainWindow::setDifferenceMushroom(){
 
 
 QString MainWindow::convertTimeToStr(MainWindow::Time time){
-    return QString::number(time.minute)+":"+QString::number(time.seconds)+":"+QString::number(time.millisecond);
+    return QString::number(time.minute)+"."+QString::number(time.seconds)+"."+QString::number(time.millisecond);
 }
 
 MainWindow::Time MainWindow::parseTimeToMSM(QString time){
     Time timeMSM;
-    QStringList listTime = time.split(':');
+    QStringList listTime = time.split('.');
     timeMSM.minute = listTime[0].toInt();
     timeMSM.seconds = listTime[1].toInt();
     timeMSM.millisecond = listTime[2].toInt();
