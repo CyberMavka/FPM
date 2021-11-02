@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -21,11 +21,22 @@ public:
     void setDifferenceCheese();
     void setDifferenceMushroom();
     void setDifferencePapperoni();
+
     struct Time{
         int minute = 0;
         int seconds = 0;
         int millisecond = 0;
     };
+    struct Employee{
+        QString name;
+        QString pizzaName;
+        QString currentTime;
+        QString penaltyTime;
+        QString finalTime;
+        int seconds;
+        int milliseconds;
+    };
+    void writeTableScore(QVector<Employee>& employee);
     Time convertSecondsToMinute(int seconds);
     Time parseTimeToMSM(QString value);
     Time sumTime(Time first, Time second);
@@ -36,6 +47,8 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
 
 private:
     Ui::MainWindow *ui;

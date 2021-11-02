@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "QString"
 #include "QStringList"
@@ -6,6 +6,8 @@
 
 #include <QTextStream>
 #include <QFile>
+#include <QVector>
+#include <windows.h>
 
 #include <fstream>
 #include <iostream>
@@ -123,14 +125,12 @@ MainWindow::Time MainWindow::sumTime(Time first, Time second){
 
 void MainWindow::on_pushButton_clicked()
 {
-    // Создаем объект класса QFile и связываем его с указанным именем файла
     QString filename = "work.csv";
     QFile file(filename);
-    // Открываем файл в режиме "Только для записи"
+
     if (file.open(QIODevice::Append)) {
-      QTextStream out(&file); // поток записываемых данных направляем в файл
-      // Для записи данных в файл используем оператор <<
-      std::cout<<"IT WORKS!"<<std::endl;
+      QTextStream out(&file);
+      out.setAutoDetectUnicode(true);
       out << ui->comboBoxPizza->currentText() << ',';
       out << ui->inputName->toPlainText() << ',';
       out << ui->FinalTimeWithPenalty->toPlainText() << ',';
@@ -183,9 +183,9 @@ void MainWindow::on_pushButton_clicked()
           tempCheese = tempCheese + " ,";
       }
       out << tempCheese<< ui->cheeseWeight->toPlainText()<<",";
-      out << ui->textPenalty->toPlainText()<<",";
-      out << ui->textPenaltyTime->toPlainText()<<",";
-      out << ui->inputFinalTime->toPlainText()<<",";
+      out << ui->textPenalty->toPlainText() << ",";
+      out << ui->textPenaltyTime->toPlainText() << ",";
+      out << ui->inputFinalTime->toPlainText() << ",";
       out << ui->idealPapperoniWeight->toPlainText() << ",";
       out << ui->idealMushroomWeight->toPlainText() << ",";
       out << ui->idealCheeseWeight->toPlainText();
@@ -201,8 +201,7 @@ void MainWindow::on_pushButton_clicked()
 }
 
 
-void MainWindow::on_pushButton_3_clicked()
-{
+void MainWindow::on_pushButton_3_clicked(){
     ui->checkBoxCheeseDistribution->setChecked(false);
     ui->checkBoxCheeseDoughAndSauce->setChecked(false);
     ui->checkBoxCheeseWeight->setChecked(false);
@@ -232,3 +231,91 @@ void MainWindow::on_pushButton_3_clicked()
     ui->inputName->setText("");
 }
 
+
+void MainWindow::on_pushButton_4_clicked(){
+      QTextStream out(stdout);
+
+      // Создаем объект
+      QFile file("work.csv");
+
+      // С помощью метода open() открываем файл в режиме чтения
+      if (!file.open(QIODevice::ReadOnly)) {
+        qWarning("Cannot open file for reading"); // если файл не найден, то выводим предупреждение и завершаем выполнение программы
+
+      }
+
+      // Создаем входящий поток, из которого будут считываться данные, и связываем его с нашим файлом
+      QTextStream in(&file);
+      QVector<Employee> emploees;
+      QVector<Employee> currentPizzaEmployee;
+      Time time;
+      QStringList listEmployee;// Считываем файл строка за строкой
+      while (!in.atEnd()) { // метод atEnd() возвращает true, если в потоке больше нет данных для чтения
+        QString line = in.readLine();
+        // метод readLine() считывает одну строку из потока
+        out << line << '\n';
+        listEmployee = line.split(",");
+        Employee empl;
+        empl.pizzaName = listEmployee[0];
+        empl.name = listEmployee[1];
+        empl.currentTime = listEmployee[17];
+        empl.penaltyTime = listEmployee[16];
+        empl.finalTime = listEmployee[2];
+        time = parseTimeToMSM(empl.finalTime);
+        empl.seconds = time.minute*60+time.seconds;
+        empl.milliseconds = time.millisecond+empl.seconds*1000;
+        emploees.append(empl);
+      }
+
+      file.close();
+
+      for(auto it: emploees){
+          if(it.pizzaName == ui->comboBoxPizza->currentText()){
+              currentPizzaEmployee.append(it);
+          }
+      }
+
+      int emplMin;
+      Employee tempEmpl;
+
+      for(int i = 0; i < currentPizzaEmployee.size(); i++){
+          emplMin = i;
+
+          for(int j = i+1; j<currentPizzaEmployee.size(); j++){
+            if(currentPizzaEmployee[j].milliseconds < currentPizzaEmployee[emplMin].milliseconds){
+                emplMin = j;
+            }
+            if(i != emplMin){
+                tempEmpl = currentPizzaEmployee[i];
+                currentPizzaEmployee[i] = currentPizzaEmployee[emplMin];
+                currentPizzaEmployee[emplMin] = tempEmpl;
+            }
+          }
+      }
+
+
+    writeTableScore(currentPizzaEmployee);
+}
+
+void MainWindow::writeTableScore(QVector<Employee>& empl){
+    QString filename = "score.csv";
+    QFile file(filename);
+
+    if (file.open(QIODevice::Append)) {
+      QTextStream out(&file);
+      out.setAutoDetectUnicode(true);
+      int count = 1;
+      out << "Місце" << "," << "Піцерія" << "," << "Ім'я" << "," << "Актуальний час" << "," << "Доданий час" << "," << "Фінальний час"<<"\n";
+      for(auto it: empl){
+        out << count << ',';
+        count++;
+        out << it.pizzaName << ',';
+        out << it.name << ',';
+        out << it.currentTime << ',';
+        out << it.penaltyTime << ',';
+        out << it.finalTime << '\n';
+
+        }
+    }
+
+}
