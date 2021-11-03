@@ -80,11 +80,6 @@ int MainWindow::getPenalty(){
     return count;
 }
 
-Time MainWindow::convertSecondsToMinute(int seconds = 0){
-
-
-}
-
 void MainWindow::setDifferenceCheese(){
     int currentCheeseWeight = ui->cheeseWeight->toPlainText().toInt();
     int idealCheeseWeight = ui->idealCheeseWeight->toPlainText().toInt();

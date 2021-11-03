@@ -1,7 +1,6 @@
 ﻿#include "time.h"
 #include <iostream>
 Time::Time(){
-
 }
 
 Time::Time(int milliseconds){
