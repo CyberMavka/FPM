@@ -1,6 +1,5 @@
-#include "employee.h"
+﻿#include "employee.h"
 
-employee::employee()
-{
+Employee::Employee(){
 
 }
