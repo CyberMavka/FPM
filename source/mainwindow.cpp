@@ -15,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow){
     ui->setupUi(this);
+    connect(ui->btnAddDataInTable, SIGNAL(clicked()), this, SLOT(addDataInTable()));
+    connect(ui->btnCalculateData, SIGNAL(clicked()), this, SLOT(calculateData()));
+    connect(ui->btnResetData, SIGNAL(clicked()), this, SLOT(resetData()));
+    connect(ui->btnGetScore, SIGNAL(clicked()), this, SLOT());
 
 }
 
@@ -23,7 +27,7 @@ MainWindow::~MainWindow(){
 }
 
 
-void MainWindow::on_pushButton_2_clicked(){
+void MainWindow::calculateData(){
     QString countFail = QString::number(getPenalty());
     ui->textPenalty->setText(countFail);
 
@@ -101,7 +105,7 @@ void MainWindow::setDifferenceMushroom(){
 
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::addDataInTable()
 {
     QString filename = "work.csv";
     QFile file(filename);
@@ -179,7 +183,7 @@ void MainWindow::on_pushButton_clicked()
 }
 
 
-void MainWindow::on_pushButton_3_clicked(){
+void MainWindow::resetData(){
     ui->checkBoxCheeseDistribution->setChecked(false);
     ui->checkBoxCheeseDoughAndSauce->setChecked(false);
     ui->checkBoxCheeseWeight->setChecked(false);
@@ -210,7 +214,7 @@ void MainWindow::on_pushButton_3_clicked(){
 }
 
 
-void MainWindow::on_pushButton_4_clicked(){
+void MainWindow::getScore(){
      /* QTextStream out(stdout);
 
       // Создаем объект
@@ -293,7 +297,6 @@ void MainWindow::writeTableScore(QVector<Employee>& empl){
         out << it.currentTime << ',';
         out << it.penaltyTime << ',';
         out << it.finalTime << '\n';
-
         }
     }
 

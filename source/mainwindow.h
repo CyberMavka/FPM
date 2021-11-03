@@ -27,13 +27,13 @@ public:
     void writeTableScore(QVector<Employee>& employee);
     QString convertTimeToStr(Time time);
 private slots:
-    void on_pushButton_2_clicked();
+    void calculateData();
 
-    void on_pushButton_clicked();
+    void addDataInTable();
 
-    void on_pushButton_3_clicked();
+    void resetData();
 
-    void on_pushButton_4_clicked();
+    void getScore();
 
 private:
     Ui::MainWindow *ui;

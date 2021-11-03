@@ -1126,7 +1126,7 @@ p, li { white-space: pre-wrap; }
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btnAddDataInTable">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -1144,7 +1144,7 @@ p, li { white-space: pre-wrap; }
      <string>Добавить в таблицу</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="btnCalculateData">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -1240,7 +1240,7 @@ p, li { white-space: pre-wrap; }
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="btnResetData">
     <property name="geometry">
      <rect>
       <x>490</x>
@@ -1258,7 +1258,7 @@ p, li { white-space: pre-wrap; }
      <string>Сброс данных</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="btnGetScore">
     <property name="geometry">
      <rect>
       <x>670</x>

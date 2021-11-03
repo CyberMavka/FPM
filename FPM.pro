@@ -11,15 +11,18 @@ SOURCES += \
     source/employee.cpp \
     source/main.cpp \
     source/mainwindow.cpp \
+    source/score.cpp \
     source/time.cpp
 
 HEADERS += \
     source/employee.h \
     source/mainwindow.h \
+    source/score.h \
     source/time.h
 
 FORMS += \
-    source/mainwindow.ui
+    source/mainwindow.ui \
+    source/score.ui
 
 TRANSLATIONS += \
     FPM_ru_RU.ts
