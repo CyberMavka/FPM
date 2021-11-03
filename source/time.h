@@ -17,7 +17,7 @@ public:
     QString getTextTime();
     Time operator+ (Time& time1);
     void operator= (const Time& other);
-
+    int getMillisecond();
 private:
     QChar findSeparatorSymbolTime(QString time);
 };

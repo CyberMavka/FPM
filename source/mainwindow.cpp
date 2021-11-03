@@ -7,18 +7,24 @@
 #include <QTextStream>
 #include <QFile>
 #include <QVector>
-#include <windows.h>
 
+#include <sstream>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow){
     ui->setupUi(this);
+
+    scoreWindow = new Score();
+    connect(scoreWindow, &Score::firstWindow, this,&MainWindow::show);
+
     connect(ui->btnAddDataInTable, SIGNAL(clicked()), this, SLOT(addDataInTable()));
     connect(ui->btnCalculateData, SIGNAL(clicked()), this, SLOT(calculateData()));
     connect(ui->btnResetData, SIGNAL(clicked()), this, SLOT(resetData()));
-    connect(ui->btnGetScore, SIGNAL(clicked()), this, SLOT());
+    connect(ui->btnGetScore, SIGNAL(clicked()), this, SLOT(getScore()));
 
 }
 
@@ -213,73 +219,82 @@ void MainWindow::resetData(){
     ui->inputName->setText("");
 }
 
+QVector<Employee> MainWindow::readAllEmployee(){
+     QTextStream out(stdout);
 
-void MainWindow::getScore(){
-     /* QTextStream out(stdout);
+     QFile file("work.csv");
 
-      // Создаем объект
-      QFile file("work.csv");
+     // С помощью метода open() открываем файл в режиме чтения
+     if (!file.open(QIODevice::ReadOnly)) {
+       qWarning("Cannot open file for reading"); // если файл не найден, то выводим предупреждение и завершаем выполнение программы
+     }
 
-      // С помощью метода open() открываем файл в режиме чтения
-      if (!file.open(QIODevice::ReadOnly)) {
-        qWarning("Cannot open file for reading"); // если файл не найден, то выводим предупреждение и завершаем выполнение программы
-
-      }
-
-      // Создаем входящий поток, из которого будут считываться данные, и связываем его с нашим файлом
-      QTextStream in(&file);
-      QVector<Employee> emploees;
-      QVector<Employee> currentPizzaEmployee;
-      Time time;
-      QStringList listEmployee;// Считываем файл строка за строкой
-      while (!in.atEnd()) { // метод atEnd() возвращает true, если в потоке больше нет данных для чтения
+     QTextStream in(&file);
+     QVector<Employee> emploees;
+    // Считываем файл строка за строкой
+     while (!in.atEnd()) { // метод atEnd() возвращает true, если в потоке больше нет данных для чтения
         QString line = in.readLine();
         // метод readLine() считывает одну строку из потока
         out << line << '\n';
-        listEmployee = line.split(",");
-        Employee empl;
-        empl.pizzaName = listEmployee[0];
-        empl.name = listEmployee[1];
-        empl.currentTime = listEmployee[17];
-        empl.penaltyTime = listEmployee[16];
-        empl.finalTime = listEmployee[2];
-        time = parseTimeToMSM(empl.finalTime);
-        empl.seconds = time.minute*60+time.seconds;
-        empl.milliseconds = time.millisecond+empl.seconds*1000;
+        Employee empl(line);
         emploees.append(empl);
-      }
+     }
 
-      file.close();
-
-      for(auto it: emploees){
-          if(it.pizzaName == ui->comboBoxPizza->currentText()){
-              currentPizzaEmployee.append(it);
-          }
-      }
-
-      int emplMin;
-      Employee tempEmpl;
-
-      for(int i = 0; i < currentPizzaEmployee.size(); i++){
-          emplMin = i;
-
-          for(int j = i+1; j<currentPizzaEmployee.size(); j++){
-            if(currentPizzaEmployee[j].milliseconds < currentPizzaEmployee[emplMin].milliseconds){
-                emplMin = j;
-            }
-            if(i != emplMin){
-                tempEmpl = currentPizzaEmployee[i];
-                currentPizzaEmployee[i] = currentPizzaEmployee[emplMin];
-                currentPizzaEmployee[emplMin] = tempEmpl;
-            }
-          }
-      }
-
-
-    writeTableScore(currentPizzaEmployee);
-*/
+     file.close();
+     return emploees;
 }
 
+QVector<Employee> MainWindow::findNeedEmployeeByPizzaName(QVector<Employee> &empls){
+     QVector<Employee> currentPizzaEmployee;
+     for(auto it: empls){
+         if(it.pizzaName == ui->comboBoxPizza->currentText()){
+
+             currentPizzaEmployee.append(it);
+         }
+     }
+     return currentPizzaEmployee;
+}
+
+void MainWindow::getScore(){
+    scoreWindow->show();
+    this->close();
+    QVector<Employee> emplsAll = readAllEmployee();
+    QVector<Employee> empls = findNeedEmployeeByPizzaName(emplsAll);
+    int emplMin;
+    Employee tempEmpl;
+
+    for(int i = 0; i < empls.size(); i++){
+        emplMin = i;
+        for(int j = 0; j < empls.size(); j++){
+          if (empls[j].time.getMillisecond() > empls[emplMin].time.getMillisecond()){
+              emplMin = j;
+          } if (i != emplMin){
+              tempEmpl = empls[i];
+              empls[i] = empls[emplMin];
+             empls[emplMin] = tempEmpl;
+          }
+        }
+    }
+    //sortedByMillisecond(empls);
+    writeTableScoreInTextBrowser(empls);
+}
+void MainWindow::writeTableScoreInTextBrowser(QVector<Employee> &empl){
+    QString data = "";
+    std::stringstream ss;
+    ss  << "Місце"  << '\t' << "Піцерія" << '\t' << "Ім'я" << '\t'
+        << "Актуальний час " << '\t' <<
+           "Доданий час" << '\t' <<  "Фінальний час" << '\t'  << std::endl;
+    int count = 1;
+
+    for(auto it: empl){
+        ss << count << '\t' << it.pizzaName.toStdString() <<'\t'<< it.name.toStdString()  << '\t' << it.currentTime.toStdString()  << '\t' << '\t'<<
+           it.penaltyTime.toStdString()  << '\t'  <<  it.finalTime.toStdString()  << std::endl;
+        //data = data + Qsss.str();
+        count++;
+    }
+    data = QString::fromStdString(ss.str());
+    scoreWindow->setDataTable(data);
+}
 void MainWindow::writeTableScore(QVector<Employee>& empl){
     QString filename = "score.csv";
     QFile file(filename);

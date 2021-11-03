@@ -5,6 +5,8 @@
 #include <QComboBox>
 #include "source/time.h"
 #include "source/employee.h"
+#include "score.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -26,6 +28,9 @@ public:
 
     void writeTableScore(QVector<Employee>& employee);
     QString convertTimeToStr(Time time);
+    QVector<Employee> readAllEmployee();
+    QVector<Employee> findNeedEmployeeByPizzaName(QVector<Employee> &empls);
+    void writeTableScoreInTextBrowser(QVector<Employee>& empl);
 private slots:
     void calculateData();
 
@@ -37,6 +42,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Score *scoreWindow;
 };
 
 #endif // MAINWINDOW_H

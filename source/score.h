@@ -1,4 +1,4 @@
-#ifndef SCORE_H
+﻿#ifndef SCORE_H
 #define SCORE_H
 
 #include <QDialog>
@@ -14,9 +14,16 @@ class Score : public QDialog
 public:
     explicit Score(QWidget *parent = nullptr);
     ~Score();
+    void setDataTable(QString data);
 
 private:
     Ui::Score *ui;
+
+signals:
+    void firstWindow();
+private slots:
+    // Слот-обработчик нажатия кнопки
+    void on_pushButton_clicked();
 };
 
 #endif // SCORE_H

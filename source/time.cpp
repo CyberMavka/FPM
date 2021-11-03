@@ -15,7 +15,6 @@ Time::Time(QString time){
     this->minute = listTime[0].toInt();
     this->seconds = listTime[1].toInt();
     this->millisecond = listTime[2].toInt();
-    std::cout << this->millisecond << this->seconds << this->minute;
 }
 
 QChar Time::findSeparatorSymbolTime(QString time){
@@ -29,6 +28,9 @@ QChar Time::findSeparatorSymbolTime(QString time){
 
 QString Time::getTextTime(){
     return QString::number(this->minute)+":"+QString::number(this->seconds)+":"+QString::number(this->millisecond);
+}
+int Time::getMillisecond(){
+    return((this->minute*60+this->seconds)*1000+this->millisecond);
 }
 
 Time Time::operator+ (Time& time){
