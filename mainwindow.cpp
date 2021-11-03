@@ -87,19 +87,19 @@ MainWindow::Time MainWindow::convertSecondsToMinute(int seconds = 0){
 void MainWindow::setDifferenceCheese(){
     int currentCheeseWeight = ui->cheeseWeight->toPlainText().toInt();
     int idealCheeseWeight = ui->idealCheeseWeight->toPlainText().toInt();
-    ui->differenceCheese->setText(QString::number(idealCheeseWeight-currentCheeseWeight));
+    ui->differenceCheese->setText(QString::number(currentCheeseWeight-idealCheeseWeight));
 }
 
 void MainWindow::setDifferencePapperoni(){
     int currentPapperoniWeight = ui->papperoniWeight->toPlainText().toInt();
     int idealPapperoniWeight = ui->idealPapperoniWeight->toPlainText().toInt();
-    ui->differencePapperoni->setText(QString::number(idealPapperoniWeight-currentPapperoniWeight));
+    ui->differencePapperoni->setText(QString::number(currentPapperoniWeight-idealPapperoniWeight));
 }
 
 void MainWindow::setDifferenceMushroom(){
     int currentMushroomWeight = ui->mushroomWeight->toPlainText().toInt();
     int idealMushroomWeight = ui->idealMushroomWeight->toPlainText().toInt();
-    ui->differenceMushroom->setText(QString::number(idealMushroomWeight-currentMushroomWeight));
+    ui->differenceMushroom->setText(QString::number(currentMushroomWeight-idealMushroomWeight));
 }
 
 
@@ -301,7 +301,7 @@ void MainWindow::writeTableScore(QVector<Employee>& empl){
     QString filename = "score.csv";
     QFile file(filename);
 
-    if (file.open(QIODevice::Append)) {
+    if (file.open(QIODevice::WriteOnly)) {
       QTextStream out(&file);
       out.setAutoDetectUnicode(true);
       int count = 1;
