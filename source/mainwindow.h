@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QComboBox>
+#include "source/time.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -22,11 +23,6 @@ public:
     void setDifferenceMushroom();
     void setDifferencePapperoni();
 
-    struct Time{
-        int minute = 0;
-        int seconds = 0;
-        int millisecond = 0;
-    };
     struct Employee{
         QString name;
         QString pizzaName;

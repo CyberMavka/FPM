@@ -26,15 +26,18 @@ MainWindow::~MainWindow(){
 void MainWindow::on_pushButton_2_clicked(){
     QString countFail = QString::number(getPenalty());
     ui->textPenalty->setText(countFail);
-    Time penalty = convertSecondsToMinute(getPenaltyTimeForMiss(getPenalty()));
-    ui->textPenaltyTime->setText(convertTimeToStr(penalty));
+
+    Time penalty(getPenaltyTimeForMiss(getPenalty())*1000);
+    ui->textPenaltyTime->setText(penalty.getTextTime());
 
     setDifferenceCheese();
     setDifferenceMushroom();
     setDifferencePapperoni();
+
     try {
-       Time final = parseTimeToMSM(ui->inputFinalTime->toPlainText());
-        ui->FinalTimeWithPenalty->setText(convertTimeToStr(sumTime(final, penalty)));
+       Time final(ui->inputFinalTime->toPlainText());
+       Time test = final+penalty;
+       ui->FinalTimeWithPenalty->setText(test.getTextTime());
     }  catch (...) {
         //QMessageBox msgBox;
         //msgBox.setText("Финальное время заполнено не правильно");
@@ -77,11 +80,9 @@ int MainWindow::getPenalty(){
     return count;
 }
 
-MainWindow::Time MainWindow::convertSecondsToMinute(int seconds = 0){
-    int minute = (seconds - seconds%60) / 60;
-    seconds = seconds%60;
-    Time time = {minute,seconds,0};
-    return time;
+Time MainWindow::convertSecondsToMinute(int seconds = 0){
+
+
 }
 
 void MainWindow::setDifferenceCheese(){
@@ -103,25 +104,7 @@ void MainWindow::setDifferenceMushroom(){
 }
 
 
-QString MainWindow::convertTimeToStr(MainWindow::Time time){
-    return QString::number(time.minute)+"."+QString::number(time.seconds)+"."+QString::number(time.millisecond);
-}
 
-MainWindow::Time MainWindow::parseTimeToMSM(QString time){
-    Time timeMSM;
-    QStringList listTime = time.split('.');
-    timeMSM.minute = listTime[0].toInt();
-    timeMSM.seconds = listTime[1].toInt();
-    timeMSM.millisecond = listTime[2].toInt();
-    return timeMSM;
-}
-
-MainWindow::Time MainWindow::sumTime(Time first, Time second){
-   int seconds = first.minute*60 + second.minute*60 + first.seconds + second.seconds;
-   Time finalTime = convertSecondsToMinute(seconds);
-   finalTime.millisecond = first.millisecond+second.millisecond;
-   return finalTime;
-}
 
 void MainWindow::on_pushButton_clicked()
 {
@@ -233,7 +216,7 @@ void MainWindow::on_pushButton_3_clicked(){
 
 
 void MainWindow::on_pushButton_4_clicked(){
-      QTextStream out(stdout);
+     /* QTextStream out(stdout);
 
       // Создаем объект
       QFile file("work.csv");
@@ -295,6 +278,7 @@ void MainWindow::on_pushButton_4_clicked(){
 
 
     writeTableScore(currentPizzaEmployee);
+*/
 }
 
 void MainWindow::writeTableScore(QVector<Employee>& empl){
