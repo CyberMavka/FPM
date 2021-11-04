@@ -9,6 +9,7 @@
 #include <QVector>
 
 #include <sstream>
+#include <string>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -279,21 +280,7 @@ void MainWindow::getScore(){
     writeTableScoreInTextBrowser(empls);
 }
 void MainWindow::writeTableScoreInTextBrowser(QVector<Employee> &empl){
-    QString data = "";
-    std::stringstream ss;
-    ss  << "Місце"  << '\t' << "Піцерія" << '\t' << "Ім'я" << '\t'
-        << "Актуальний час " << '\t' <<
-           "Доданий час" << '\t' <<  "Фінальний час" << '\t'  << std::endl;
-    int count = 1;
-
-    for(auto it: empl){
-        ss << count << '\t' << it.pizzaName.toStdString() <<'\t'<< it.name.toStdString()  << '\t' << it.currentTime.toStdString()  << '\t' << '\t'<<
-           it.penaltyTime.toStdString()  << '\t'  <<  it.finalTime.toStdString()  << std::endl;
-        //data = data + Qsss.str();
-        count++;
-    }
-    data = QString::fromStdString(ss.str());
-    scoreWindow->setDataTable(data);
+    scoreWindow->setDataTable(empl);
 }
 void MainWindow::writeTableScore(QVector<Employee>& empl){
     QString filename = "score.csv";

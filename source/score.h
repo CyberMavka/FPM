@@ -2,7 +2,11 @@
 #define SCORE_H
 
 #include <QDialog>
-
+#include <QVector>
+#include <source/employee.h>
+#include "QStandardItemModel"
+#include "QStandardItem"
+#include <QHeaderView>
 namespace Ui {
 class Score;
 }
@@ -14,7 +18,7 @@ class Score : public QDialog
 public:
     explicit Score(QWidget *parent = nullptr);
     ~Score();
-    void setDataTable(QString data);
+    void setDataTable(QVector<Employee> &empl);
 
 private:
     Ui::Score *ui;
