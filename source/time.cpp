@@ -27,7 +27,15 @@ QChar Time::findSeparatorSymbolTime(QString time){
 }
 
 QString Time::getTextTime(){
-    return QString::number(this->minute)+":"+QString::number(this->seconds)+":"+QString::number(this->millisecond);
+    QString minuteTemp = QString::number(this->minute), secondTemp = QString::number(this->seconds), millisecondTemp = QString::number(this->millisecond);
+    if(minuteTemp.length() == 1){
+        minuteTemp = "0" + minuteTemp;
+    } if (secondTemp.length() == 1){
+        secondTemp = "0" + secondTemp;
+    } if (millisecondTemp.length()==1){
+        millisecondTemp = "0" + millisecondTemp;
+    }
+    return minuteTemp + ":" + secondTemp + ":" + millisecondTemp;
 }
 int Time::getMillisecond(){
     return((this->minute*60+this->seconds)*1000+this->millisecond);
