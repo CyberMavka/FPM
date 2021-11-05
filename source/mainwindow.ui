@@ -1255,7 +1255,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>Стерти</string>
+     <string>Стерти дані</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnGetScore">
