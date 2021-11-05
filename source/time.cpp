@@ -1,5 +1,6 @@
 ﻿#include "time.h"
 #include <iostream>
+
 Time::Time(){
 }
 
@@ -11,7 +12,8 @@ Time::Time(int milliseconds){
 }
 
 Time::Time(QString time){
-    QStringList listTime = time.split(findSeparatorSymbolTime(time));
+    QStringList listTime;
+    listTime = time.split(findSeparatorSymbolTime(time));
     this->minute = listTime[0].toInt();
     this->seconds = listTime[1].toInt();
     this->millisecond = listTime[2].toInt();
@@ -59,4 +61,31 @@ Time::Time(const Time& other){
     this->millisecond = other.millisecond;
     this->minute = other.minute;
     this->seconds = other.seconds;
+}
+
+bool auditTimeStr(QString time){
+    int countNumbers = 0;
+    if(time.size()<5 || time.size()> 8){
+        return false;
+    }
+    for(int i = 0; i < time.size(); ++i){
+        if(!time[i].isDigit() || i+1 == time.size()){
+            //потрібно для того якщо ми будемо в кінці рядка перемістити і
+            //на символ закінчення рядка \0 для коректної роботи алгоритма
+            //інакше звернення контейнера [i] буде до кінцевої цифри і воно не зможе пройти перевірку
+            if(i + 1 == time.size()){
+                i = i + 1;
+            }
+            if(countNumbers == 2 &&
+              (!time[i-1].isDigit() || !time[i-2].isDigit())){
+                return false;
+            } else if (countNumbers == 1 && !time[i-1].isDigit()) {
+                return false;
+            }
+            //при проходженні другого кола, якщо формат 00:0:00 countNumbers буде 2 що зіб'є алгоритм
+            countNumbers = -1;
+        }
+        countNumbers++;
+    }
+    return true;
 }
