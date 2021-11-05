@@ -1141,7 +1141,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>Добавити в таблицю</string>
+     <string>Додати до таблиці</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnCalculateData">
