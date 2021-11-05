@@ -1159,7 +1159,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>Розрахувати</string>
+     <string>Розрахувати дані</string>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget_4">
