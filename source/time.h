@@ -3,6 +3,7 @@
 #include <QString>
 #include <QStringList>
 #include <QChar>
+#include "QTime"
 class Time
 {
 public:
@@ -18,8 +19,11 @@ public:
     Time operator+ (Time& time1);
     void operator= (const Time& other);
     int getMillisecond();
+
 private:
     QChar findSeparatorSymbolTime(QString time);
+    bool  validTime = false;
 };
 
+bool  auditTimeStr(QString time);
 #endif // TIME_H
