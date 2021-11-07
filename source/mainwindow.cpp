@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -37,22 +38,34 @@ MainWindow::~MainWindow(){
 void MainWindow::calculateData(){
     QString countFail = QString::number(getPenalty());
     ui->textPenalty->setText(countFail);
-
-    Time penalty(getPenaltyTimeForMiss(getPenalty())*1000);
-    ui->textPenaltyTime->setText(penalty.getTextTime());
-
     setDifferenceCheese();
     setDifferenceMushroom();
     setDifferencePapperoni();
-
-    try {
-       Time final(ui->inputFinalTime->toPlainText());
-       Time test = final+penalty;
-       ui->FinalTimeWithPenalty->setText(test.getTextTime());
-    }  catch (...) {
-        //QMessageBox msgBox;
-        //msgBox.setText("Финальное время заполнено не правильно");
+    if (ui->differenceCheese->toPlainText().toInt() > 56 || ui->differenceCheese->toPlainText().toInt() < -28){
+        ui->checkBoxCheeseWeight->setChecked(true);
+    } if (ui->differencePapperoni->toPlainText().toInt() > 56 || ui->differencePapperoni->toPlainText().toInt() < -28){
+        ui->checkBoxPapperoniWeight->setChecked(true);
+    } if (ui->differenceMushroom->toPlainText().toInt() > 56 || ui->differenceMushroom->toPlainText().toInt() < -28){
+        ui->checkBoxMushroomWeight->setChecked(true);
     }
+
+    Time penalty(getPenaltyTimeForMiss(getPenalty())*1000);
+    ui->textPenaltyTime->setText(penalty.getTextTime());
+    //QTime qtime = QTime::fromString(ui->inputFinalTime->toPlainText(),"m.s.zz");
+    if(auditTimeStr(ui->inputFinalTime->toPlainText())){
+        Time final(ui->inputFinalTime->toPlainText());
+        Time test = final+penalty;
+        ui->FinalTimeWithPenalty->setText(test.getTextTime());
+    } else {
+        QMessageBox msgBox;
+
+        msgBox.setText("Помилка з фінальним часом");
+
+        msgBox.exec();
+
+    }
+
+
 }
 
 int MainWindow::getPenaltyTimeForMiss(int countPenalty){

@@ -4,7 +4,6 @@ Employee::Employee(){
 
 }
 
-
 Employee::Employee(QString line){
     QStringList listEmployee;
     listEmployee = line.split(",");
