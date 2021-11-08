@@ -6,6 +6,7 @@
 #include "source/time.h"
 #include "source/employee.h"
 #include "score.h"
+#include <QTime>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
