@@ -7,6 +7,8 @@
 #include <QTextStream>
 #include <QFile>
 #include <QVector>
+#include <QWidget>
+#include <QJsonObject>
 
 #include <sstream>
 #include <string>
@@ -41,6 +43,7 @@ void MainWindow::calculateData(){
     setDifferenceCheese();
     setDifferenceMushroom();
     setDifferencePapperoni();
+
     if (ui->differenceCheese->toPlainText().toInt() > 56 || ui->differenceCheese->toPlainText().toInt() < -28){
         ui->checkBoxCheeseWeight->setChecked(true);
     } if (ui->differencePapperoni->toPlainText().toInt() > 56 || ui->differencePapperoni->toPlainText().toInt() < -28){
@@ -58,9 +61,7 @@ void MainWindow::calculateData(){
         ui->FinalTimeWithPenalty->setText(test.getTextTime());
     } else {
         QMessageBox msgBox;
-
         msgBox.setText("Помилка з фінальним часом");
-
         msgBox.exec();
 
     }
@@ -125,8 +126,7 @@ void MainWindow::setDifferenceMushroom(){
 
 
 
-void MainWindow::addDataInTable()
-{
+void MainWindow::addDataInTable(){
     QString filename = "work.csv";
     QFile file(filename);
 
@@ -200,6 +200,7 @@ void MainWindow::addDataInTable()
 
     // Закрываем файл
     file.close();
+    resetData();
 }
 
 
@@ -245,11 +246,11 @@ QVector<Employee> MainWindow::readAllEmployee(){
 
      QTextStream in(&file);
      QVector<Employee> emploees;
-    // Считываем файл строка за строкой
+     // Считываем файл строка за строкой
      while (!in.atEnd()) { // метод atEnd() возвращает true, если в потоке больше нет данных для чтения
         QString line = in.readLine();
+        std::cout << line.toStdString() << std::endl;
         // метод readLine() считывает одну строку из потока
-        out << line << '\n';
         Employee empl(line);
         emploees.append(empl);
      }
@@ -316,3 +317,18 @@ void MainWindow::writeTableScore(QVector<Employee>& empl){
     }
 
 }
+
+
+/*void MainWindow::addToJSON()
+{
+    // Создаём объект текста
+    QJsonObject textObject;
+    textObject["title"] = ui->titleLineEdit->text();                // Устанавливаем заголовок текста
+    textObject["content"] = ui->contentTextEdit->toPlainText();     // Устанавливаем содержание текста
+    QJsonArray textsArray = m_currentJsonObject["texts"].toArray(); // Забираем текущий массив текстов, даже если он не существует, он будет создан автоматически
+    textsArray.append(textObject);                                  // Добавляем объект текста в массив
+    m_currentJsonObject["texts"] = textsArray;                      // Сохраняем массив обратно в текущий объект
+
+    // Устанавливаем текст всего Json объекта в текстовое поле для проверки
+    ui->jsonDocumentTextEdit->setText(QJsonDocument(m_currentJsonObject).toJson(QJsonDocument::Indented));
+}*/
