@@ -8,21 +8,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    source/employee.cpp \
-    source/main.cpp \
-    source/mainwindow.cpp \
-    source/score.cpp \
-    source/time.cpp
+    source/main.cpp
+
 
 HEADERS += \
-    source/employee.h \
-    source/mainwindow.h \
-    source/score.h \
-    source/time.h
+
 
 FORMS += \
-    source/mainwindow.ui \
-    source/score.ui
+
 
 TRANSLATIONS += \
     FPM_ru_RU.ts
